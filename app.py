@@ -12,7 +12,8 @@ def hello():
 
 @app.route('/message', methods=['POST'])
 def process_message():
-    t = t + 1
+    global t  # グローバル変数を使用するための宣言
+    t += 1
     return jsonify({'message': t})
 
 if __name__ == '__main__':
