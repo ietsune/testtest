@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app)  # CORS設定を追加
 
-t = 0
+t = 0  # グローバル変数として定義
 
 @app.route('/')
 def hello():
@@ -12,9 +13,14 @@ def hello():
 
 @app.route('/message', methods=['POST'])
 def process_message():
-    global t  # グローバル変数を使用するための宣言
+    global t  # グローバル変数を使用
     t += 1
-    return jsonify({'message': t})
+
+    # 例: 外部APIにリクエストを送信
+    response = requests.get('https://api.example.com/data')
+    external_data = response.json()
+
+    return jsonify({'message': t, 'external_data': external_data})
 
 if __name__ == '__main__':
     app.run(debug=True)
